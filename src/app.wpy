@@ -1,0 +1,45 @@
+<style lang="less">
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/index',
+      'pages/musicplayer'
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: 'green',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black'
+    },
+    requiredBackgroundModes: ["audio"],
+  }
+
+  globalData = {
+    userInfo: null,
+    backgroundManger:''
+  }
+
+  constructor () {
+    super()
+    this.use('requestfix')
+  }
+
+  onLaunch() {
+    //登录时挂载全局媒体播放器
+    wepy.$instance.globalData.backgroundManger=wx.getBackgroundAudioManager();
+  }
+}
+</script>

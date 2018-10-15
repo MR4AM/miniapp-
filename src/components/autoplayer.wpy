@@ -1,0 +1,46 @@
+<style lang="less">
+    .playerComponents{
+       width: 90%;
+       position: absolute;
+       top:10%;
+       left:50%;
+       transform: translateX(-50%);
+       border: 1px soild #ccc;
+       height: 200px;
+       background-color: aquamarine; 
+    }
+</style>
+<template>
+  <view class="playerComponents" @tap="play">
+     <view class="toastTitle">{{title}}</view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import utils from '../utils/utils'
+  export default class extends wepy.component {
+    props = {
+        title:{
+            type: String,
+            twoWay: true
+        },
+        src:{
+            type: String,
+            twoWay: true
+        }
+    };
+    data={
+    }
+    events={
+
+    }
+    play(){
+        utils.createMedia();
+    }
+    onLoad(){
+         utils.createMedia();
+         console.log(wepy.$instance.globalData.backgroundManger,'在组件内检查全局播放器')
+    }
+  }
+</script>

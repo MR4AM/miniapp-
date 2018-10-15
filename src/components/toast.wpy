@@ -1,0 +1,50 @@
+<style lang="less">
+    .toastComponent{
+        width:400rpx;
+        height: 80rpx;
+        border-radius:50rpx; 
+        background: #000;
+        opacity: .8;
+        position: absolute;
+        bottom:10%;
+        .toastTitle{
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+            color: aliceblue;
+        }
+    }
+</style>
+<template>
+  <view class="toastComponent" wx:if="{{showToast}}">
+     <view class="toastTitle">{{title}}</view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class extends wepy.component {
+    props = {
+        showToast:{
+            type: String,
+            twoWay: true
+        },
+        title:{
+            type: String,
+            twoWay: true
+        }
+    };
+    data={
+    }
+    onShow(){
+        console.log(8989)
+        setTimeout(() => {
+            this.props.showToast=false;
+            this.$apply();
+        }, 3000);
+    }
+  }
+</script>

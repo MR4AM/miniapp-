@@ -1,0 +1,62 @@
+<style lang="less">
+  .button{
+    width: 90%;
+    text-align: center;
+    font-size: 24px;
+    height: 50px;
+    line-height: 50px;
+    border:2px solid #ccc;
+    margin-top: 20px;
+  }
+</style>
+<template>
+  <view class="container">
+      <repeat for="{{componentsList}}" key="{{index}}" item="item">
+          <view class="button" @tap="showComponent" data-type="{{item}}">{{item}}</view>
+      </repeat>
+      <toast  :showToast.sync="showToast" :title.sync="title"/>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Toast from '../components/toast'
+  import utils from '../utils/utils'
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '基于wepy对小程序常用组件进行封装'
+    }
+    components={
+      toast: Toast
+    }
+    data={
+      componentsList:['toast提示','弹窗','媒体播放组件'],
+      showToast:false,
+      title:'这是一个toast'
+    }
+    showComponent(type){
+      switch(type.currentTarget.dataset.type){
+        case 'toast提示':
+        this.showToast=true;
+        this.title='toast展示'
+        this.$apply();
+        setTimeout(() => {
+         this.showToast=false;
+         this.$apply();
+        }, 3000);
+        break;
+        case '媒体播放组件':
+        utils.route('navigate','musicplayer')
+        default:
+        this.showToast=true;
+        this.title='组件待开发中'
+        this.$apply();
+        setTimeout(() => {
+         this.showToast=false;
+         this.$apply();
+        }, 3000);
+      }
+    }
+    methods={}
+  }
+</script>
