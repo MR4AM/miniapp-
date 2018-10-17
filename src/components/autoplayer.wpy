@@ -7,12 +7,25 @@
        transform: translateX(-50%);
        border: 1px soild #ccc;
        height: 200px;
-       background-color: aquamarine; 
+       background-color: aquamarine;
+       .playbutton{
+           position: absolute;
+           top:50%;
+           left:50%;
+           transform: translate(-50%,-50%);
+           .pause{
+               width: 50px;
+               height: 50px;
+           }
+       } 
     }
 </style>
 <template>
-  <view class="playerComponents" @tap="play">
-     <view class="toastTitle">{{title}}</view>
+  <view class="playerComponents" @tap="play" data-src="{{testmp3}}">
+     <view class="playbutton">
+         <image src='../images/music_play.png' class="pause" wx:if="{{!play}}"></image>
+         <image src='../images/music_pause.png' class="pause" wx:if="{{play}}"></image>
+     </view>
   </view>
 </template>
 
@@ -31,16 +44,31 @@
         }
     };
     data={
+        play:wepy.$instance.globalData.player.playstate,
+        testmp3:'https://img.shuixindk.cn/mp3/012d0fc11e405d6b01908b846336db07.mp3'
     }
-    events={
-
-    }
-    play(){
-        utils.createMedia();
+    methods={
+         play(e){
+            let backgroundManger=wepy.$instance.globalData.backgroundManger;
+            console.log(wepy.$instance.globalData.backgroundManger,e,'在组件内检查全局播放器')
+            if(wepy.$instance.globalData.player.playstate){
+                console.log(666)
+                backgroundManger.pause();
+                wepy.$instance.globalData.player.playstate=false;
+                this.play=false;
+                this.$apply();
+            }else{
+                console.log(777)
+                utils.createMedia(e.currentTarget.dataset.src);
+                wepy.$instance.globalData.player.playstate=true;
+                this.play=true;
+                this.$apply();
+            }
+        }
     }
     onLoad(){
-         utils.createMedia();
-         console.log(wepy.$instance.globalData.backgroundManger,'在组件内检查全局播放器')
+        this.play=wepy.$instance.globalData.player.playstate;
+        this.$apply();
     }
   }
 </script>

@@ -20,6 +20,7 @@
   import wepy from 'wepy'
   import Toast from '../components/toast'
   import autoPlayer from '../components/autoplayer'
+  import utils from '../utils/utils'
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: '音乐播放器组件展示页'
@@ -28,7 +29,9 @@
       toast: Toast,
       autoplayer:autoPlayer
     }
-
     methods={}
+    // onShow(){
+    //     utils.watchMedia()
+    // }
   }
 </script>

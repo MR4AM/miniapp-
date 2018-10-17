@@ -1,4 +1,5 @@
 import wepy from 'wepy';
+let audioManger= wepy.$instance.globalData.backgroundManger;
 let utils ={
     //路由跳转
     route(routeType,url){
@@ -25,10 +26,26 @@ let utils ={
         }
     },
     //创建一个全局媒体播放器
-    createMedia(){
-        let testmp3 ='https://img.shuixindk.cn/mp3/012d0fc11e405d6b01908b846336db07.mp3';
-        let audioManger= wepy.$instance.globalData.backgroundManger;
-        audioManger.src=testmp3;
+    createMedia(mp3src,mp3title){
+        audioManger.src=mp3src;
+    },
+    //监控全局媒体播放器的行为
+    watchMedia(manger){
+        console.log(manger)
+        let audioManger=manger;
+        audioManger.onPause(()=>{
+            console.log('监控音乐暂停')
+        })
+        audioManger.onPlay(()=>{
+            console.log('监听音乐播放')
+        })
+        audioManger.onStop(()=>{
+            console.log('监听音乐停止')
+        })
+        audioManger.onEnded((cb)=>{
+            console.log('监听音乐自然播放结束')
+            cb && cb();
+        })
     }
 }
 

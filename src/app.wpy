@@ -29,7 +29,10 @@ export default class extends wepy.app {
 
   globalData = {
     userInfo: null,
-    backgroundManger:''
+    backgroundManger:'',//全局播放器变量
+    player:{
+      playstate:false
+    }
   }
 
   constructor () {
@@ -41,5 +44,31 @@ export default class extends wepy.app {
     //登录时挂载全局媒体播放器
     wepy.$instance.globalData.backgroundManger=wx.getBackgroundAudioManager();
   }
+  onShow(){
+    //小程序处于热启动中监听页面播放器及其他组件的挂载状态
+    if(wepy.$instance.globalData.backgroundManger){
+       this.watchMedia()
+    }
+  }
+  //全局事件
+   watchMedia(){
+        let audioManger=wepy.$instance.globalData.backgroundManger;
+        audioManger.onPause(()=>{
+            console.log('监控音乐暂停');
+            wepy.$instance.globalData.player.playstate=false;
+        })
+        audioManger.onPlay(()=>{
+            console.log('监听音乐播放');
+            wepy.$instance.globalData.player.playstate=true;
+        })
+        audioManger.onStop(()=>{
+            console.log('监听音乐停止');
+            wepy.$instance.globalData.player.playstate=false;
+        })
+        audioManger.onEnded(()=>{
+            console.log('监听音乐自然播放结束');
+            wepy.$instance.globalData.player.playstate=false;
+        })
+    }
 }
 </script>
