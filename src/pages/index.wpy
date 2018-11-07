@@ -1,12 +1,15 @@
 <style lang="less">
-  .button{
-    width: 90%;
-    text-align: center;
-    font-size: 24px;
-    height: 50px;
-    line-height: 50px;
-    border:2px solid #ccc;
-    margin-top: 20px;
+  .container{
+    height: 100%;
+    .button{
+      width: 90%;
+      text-align: center;
+      font-size: 24px;
+      height: 50px;
+      line-height: 50px;
+      border:2px solid #ccc;
+      margin-top: 20px;
+    }
   }
 </style>
 <template>
@@ -15,7 +18,7 @@
           <view class="button" @tap="showComponent" data-type="{{item}}">{{item}}</view>
       </repeat>
       <toast  :showToast.sync="showToast" :title.sync="title"/>
-      <modal :showModal.sync="showModal" :modalTitle.sync="{{modalTitle}}"/>
+      <modal :showModal.sync="showModal" :modalTitle.sync="modalTitle" :modalContent.sync="modalContent"/>
   </view>
 </template>
 
@@ -39,6 +42,8 @@
       title:'这是一个toast',//toast文案
       showModal:false,//展示弹窗
       modalTitle:'',//弹窗title
+      modalContent:'',//弹窗弹窗文本
+      modalSrc:'',//弹窗图片路径
     }
     showComponent(type){
       switch(type.currentTarget.dataset.type){
@@ -52,9 +57,9 @@
           }, 3000);
         break;
         case '弹窗':
-        console.log(666)
           this.showModal=true;
-          this.modalTitle='测试弹窗标题'
+          this.modalTitle='测试弹窗标题';
+          this.modalContent='这是一段很长很长的花花huahauhauahuhauahuahauhuahuahauhhhhhhhhhhhhhhhhhhhhh花'
           this.$apply();
           break;
         case '媒体播放组件':
