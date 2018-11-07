@@ -1,0 +1,178 @@
+<style>
+page{
+background: #eee;
+font-size: 14px;
+}
+.row{
+overflow: hidden;
+height: 50px;
+border-bottom: 1px solid #ccc;
+padding: 0 10px; 
+color: #777;
+background: #fff;
+display: flex;
+align-items:center;
+}
+.submit-button{
+margin: 10px 8px 0 8px;
+background: #ff9700;
+line-height: 38px;
+text-align: center;
+color: #fff;
+border-radius: 6px;
+}
+.title{
+width:90px;
+float: left;
+}
+.info{
+/* background: pink; */
+flex: 1;
+}
+radio{
+transform:scale(0.7);
+}
+/* radio-group{
+font-size: 16px
+} */
+.info-input{
+height: 50px;
+}
+.success{
+background: #fff;
+padding-bottom: 10px;
+}
+.succeed{
+height: 120px;
+line-height: 120px;
+text-align: center;
+}
+.black_index{
+color: blue;
+font-size: 14px;
+}
+.succeed-icon{
+margin-right: 6px;
+position: relative;
+top:4px;
+}
+.success-blackHome{
+margin: 10px;
+}
+
+</style>
+<template>
+<view>
+<view wx:if="{{!success}}">
+<view class='row'>
+<label class="title">我的地址</label>
+<view class='info' @tap='handleAddressClick'>{{address}}</view>
+</view>
+<view class='row'>
+<label class="title">类型</label>
+<view class='info'>
+<radio-group @change="handleTypeChange">
+<label>
+<radio value="buy" checked="true" />求购
+<radio value="sell" />转让
+</label>
+</radio-group>
+</view>
+</view>
+<view class='row'>
+<label class="title">说明</label>
+<view class='info'>
+<input class='info-input' @input="handleMessageChange" placeholder='{{message}}'/>
+</view>
+</view>
+<view class='row'>
+<label class="title">联系方式</label>
+<view class='info'>
+<input class='info-input' @input="handleContactChange" placeholder='{{contact}}'/>
+</view>
+</view>
+
+<view class='submit-button' @tap='handleSubmit'>发布信息</view>
+</view>
+
+<view wx:if="{{success}}" class='success'>
+<view class='succeed'><icon type="success" size="20" class='succeed-icon'/>恭喜,提交成功!</view>
+<button type="default" class='success-blackHome' @tap='handleSuccessBack'> 返回首页 </button>
+</view>
+
+
+</view>
+
+</template>
+<script>
+import wepy from 'wepy'
+export default class Publish extends wepy.page{
+data = {
+address:"点击选择，要勾选",
+message:"填写您的具体需求",
+contact:"填写您的联系方式",
+// success: false
+};
+staticData = {
+type:"buy"
+};
+handleAddressClick() { 
+wepy.chooseLocation({
+success: this.handleChooseLocationSucc.bind(this)
+})
+};
+
+handleChooseLocationSucc(res){
+console.log(res.address)
+this.setData({
+address:res.address,
+});
+console.log(this.data)
+Object.assign(this.staticData, { //ES6的语法Object.assign方法用于对象的合并
+latitude: res.latitude, //复制到目标对象（ staticData ）
+longitude: res.longitude //所以最终的staticData为，
+}) //{ type:"buy", latitude:XXX,longitudeXXX:}
+};
+handleTypeChange(e){ 
+console.log(e.detail.value) //<radio-group/>中的选中项发生变化时触发change事件，
+this.staticData.type = e.detail.value;//event.detail = {value: 选中项radio的value},
+//input的取值也是一样的
+};
+handleContactChange(e){
+console.log(this.staticData);
+this.staticData.contact = e.detail.value;
+};
+handleMessageChange(e) {
+console.log(this.staticData);
+this.staticData.message = e.detail.value;
+};
+handleSubmit(){
+
+console.log(this.data)
+};
+// handleSubmitSucc(res) {
+// console.log(res.data)
+// if (res.data && res.data.status){
+// this.setData({
+// success:true
+// })
+// }
+// };
+handleSuccessBack(){
+// wx.navigateBack({
+// })
+console.log(this.staticData)
+}
+
+
+
+// onShareAppMessage: function () {
+// return {
+// title: '信息发布',
+// path: '/page/publish/publish'
+// }
+// }
+
+}
+
+</script>

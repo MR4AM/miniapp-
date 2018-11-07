@@ -15,6 +15,7 @@
           <view class="button" @tap="showComponent" data-type="{{item}}">{{item}}</view>
       </repeat>
       <toast  :showToast.sync="showToast" :title.sync="title"/>
+      <modal :showModal.sync="showModal" :modalTitle.sync="{{modalTitle}}"/>
   </view>
 </template>
 
@@ -22,31 +23,46 @@
   import wepy from 'wepy'
   import Toast from '../components/toast'
   import utils from '../utils/utils'
+  import Modal from '../components/modal'
+  // import echarts from 'echarts'
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: '基于wepy对小程序常用组件进行封装'
     }
     components={
-      toast: Toast
+      toast: Toast,
+      modal: Modal
     }
     data={
-      componentsList:['toast提示','弹窗','媒体播放组件'],
-      showToast:false,
-      title:'这是一个toast'
+      componentsList:['toast提示','弹窗','媒体播放组件','地图定位'],
+      showToast:false,//展示toast
+      title:'这是一个toast',//toast文案
+      showModal:false,//展示弹窗
+      modalTitle:'',//弹窗title
     }
     showComponent(type){
       switch(type.currentTarget.dataset.type){
         case 'toast提示':
-        this.showToast=true;
-        this.title='toast展示'
-        this.$apply();
-        setTimeout(() => {
-         this.showToast=false;
-         this.$apply();
-        }, 3000);
+          this.showToast=true;
+          this.title='toast展示'
+          this.$apply();
+          setTimeout(() => {
+            this.showToast=false;
+            this.$apply();
+          }, 3000);
         break;
+        case '弹窗':
+        console.log(666)
+          this.showModal=true;
+          this.modalTitle='测试弹窗标题'
+          this.$apply();
+          break;
         case '媒体播放组件':
-        utils.route('navigate','musicplayer')
+          utils.route('navigate','musicplayer')
+        break;
+        case '地图定位':
+          utils.route('navigate','test');
+          break;
         default:
         this.showToast=true;
         this.title='组件待开发中'
@@ -58,5 +74,8 @@
       }
     }
     methods={}
+    onLoad(){
+      // console.log(echarts,'使用echarts')
+    }
   }
 </script>
