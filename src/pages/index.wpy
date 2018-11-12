@@ -27,6 +27,7 @@
   import Toast from '../components/toast'
   import utils from '../utils/utils'
   import Modal from '../components/modal'
+  import jasonUtils from '../utils/jasonUtils.js'
   // import echarts from 'echarts'
   export default class Index extends wepy.page {
     config = {
@@ -37,7 +38,7 @@
       modal: Modal
     }
     data={
-      componentsList:['toast提示','弹窗','媒体播放组件','地图定位'],
+      componentsList:['toast提示','弹窗','媒体播放组件','地图定位','检测js工具方法'],
       showToast:false,//展示toast
       title:'这是一个toast',//toast文案
       showModal:false,//展示弹窗
@@ -67,6 +68,19 @@
         break;
         case '地图定位':
           utils.route('navigate','test');
+          break;
+        case '检测js工具方法':
+          //  let time=new Date();
+          //  let ja2=jasonUtils.formatTime(time,'{h}时{i}分{s}秒');
+          let ja1=[2,3,3,2,17,21,99,0,0];
+           console.log(jasonUtils.uniqueArray(ja1),'检测工具');
+          break;
+        case 'js复制到粘贴板':
+          let txt='关注这个小程序，关注小程序组件化市场，工具类';
+          jasonUtils.jsCopy(txt);
+          this.showToast=true;
+          this.title=`已成功复制${txt}`;
+          this.$apply();
           break;
         default:
         this.showToast=true;
