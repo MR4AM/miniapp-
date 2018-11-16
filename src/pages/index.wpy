@@ -38,7 +38,7 @@
       modal: Modal
     }
     data={
-      componentsList:['toast提示','弹窗','媒体播放组件','地图定位','检测js工具方法'],
+      componentsList:['toast提示','弹窗','媒体播放组件','地图定位','检测js工具方法','获取用户acess_token'],
       showToast:false,//展示toast
       title:'这是一个toast',//toast文案
       showModal:false,//展示弹窗
@@ -82,6 +82,9 @@
           this.title=`已成功复制${txt}`;
           this.$apply();
           break;
+        case '获取用户acess_token':
+          utils.getAt();
+         break;
         default:
         this.showToast=true;
         this.title='组件待开发中'

@@ -46,6 +46,26 @@ let utils ={
             console.log('监听音乐自然播放结束')
             cb && cb();
         })
+    },
+    //获取assess_tocken
+    getAt(){
+        wx.login({
+            success:res=>{
+                console.log(res.code,'获取用户登录凭证');
+                let APPID='wxc8ee2be24346f5d8';
+                let APPSECRET='11fffcc718b1ca93fcf58d4a3f66b7c8';
+                wx.request({
+                    url:`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${APPID}&secret=${APPSECRET}`,
+                    method:"GET",
+                    header: {
+                        'Content-Type': 'json'
+                    },
+                    success:((res1)=>{
+                        console.log(res1,'检测获取access_token')
+                    })
+                })
+            }
+        })
     }
 }
 
