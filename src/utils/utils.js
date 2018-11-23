@@ -48,7 +48,7 @@ let utils ={
         })
     },
     //获取assess_tocken
-    getAt(){
+    getAt(openid){
         wx.login({
             success:res=>{
                 console.log(res.code,'获取用户登录凭证');
@@ -60,8 +60,29 @@ let utils ={
                     header: {
                         'Content-Type': 'json'
                     },
+                    success:((res2)=>{
+                        return res2.data.access_token;
+                        console.log(res2,'检测获取access_token')
+                    })
+                })
+            }
+        })
+    },
+    getOpenid(){
+        wx.login({
+            success:res=>{
+                console.log(res.code,'获取用户登录凭证');
+                let APPID='wxc8ee2be24346f5d8';
+                let APPSECRET='11fffcc718b1ca93fcf58d4a3f66b7c8';
+                wx.request({
+                    url:`https://api.weixin.qq.com/sns/jscode2session?appid${APPID}+'&secret=${APPSECRET}+'&js_code=${res.code}+'&grant_type=authorization_code`,
+                    method:"GET",
+                    header: {
+                        'Content-Type': 'json'
+                    },
                     success:((res1)=>{
-                        console.log(res1,'检测获取access_token')
+                        return res1.data.openid;
+                        console.log(res1,'检测获取openid')
                     })
                 })
             }

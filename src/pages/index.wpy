@@ -17,6 +17,9 @@
       <repeat for="{{componentsList}}" key="{{index}}" item="item">
           <view class="button" @tap="showComponent" data-type="{{item}}">{{item}}</view>
       </repeat>
+      <form bind:submit="testSubmit" report-submit="true">
+            <button formType="submit">发送模板消息</button>
+      </form>
       <toast  :showToast.sync="showToast" :title.sync="title"/>
       <modal :showModal.sync="showModal" :modalTitle.sync="modalTitle" :modalContent.sync="modalContent"/>
   </view>
@@ -70,10 +73,7 @@
           utils.route('navigate','test');
           break;
         case '检测js工具方法':
-          //  let time=new Date();
-          //  let ja2=jasonUtils.formatTime(time,'{h}时{i}分{s}秒');
-          let ja1=[2,3,3,2,17,21,99,0,0];
-           console.log(jasonUtils.uniqueArray(ja1),'检测工具');
+             console.log(jasonUtils.formatPassTime(new Date()-700000))
           break;
         case 'js复制到粘贴板':
           let txt='关注这个小程序，关注小程序组件化市场，工具类';
@@ -99,5 +99,32 @@
     onLoad(){
       // console.log(echarts,'使用echarts')
     }
+    testSubmit(e){
+        let _access_token = utils.getAt();
+        let openid=utils.getOpenid();
+        let url='https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='+_access_token;   
+        let _jsonData = {
+          access_token: _access_token,
+          touser: openid,
+          template_id: 'Uvm6DOudBIdxlElkVnM8OhAhB4CxBmKhmkbBGAM0S44',
+          form_id: e.detail.formId,
+          page: "pages/index/index",
+          data: {
+            "keyword1": { "value": "测试数据一", "color": "#173177" },
+            "keyword2": { "value": "测试数据二", "color": "#173177" },
+            "keyword3": { "value": "测试数据三", "color": "#173177" },
+            "keyword4": { "value": "测试数据四", "color": "#173177" },
+          }
+        }
+        wx.request({
+          url:url,
+          data:_jsonData,
+          success:(res)=>{
+            console.log(res);
+          }
+        })
+    }
+        
+   
   }
 </script>
