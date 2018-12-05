@@ -17,11 +17,12 @@
       <repeat for="{{componentsList}}" key="{{index}}" item="item">
           <view class="button" @tap="showComponent" data-type="{{item}}">{{item}}</view>
       </repeat>
-      <form bind:submit="testSubmit" report-submit="true">
+      <!-- <form bind:submit="testSubmit" report-submit="true">
             <button formType="submit">发送模板消息</button>
-      </form>
+      </form> -->
       <toast  :showToast.sync="showToast" :title.sync="title"/>
       <modal :showModal.sync="showModal" :modalTitle.sync="modalTitle" :modalContent.sync="modalContent"/>
+      <loading :showLoading.sync="showLoading" :loadingDelay.sync="loadingDelay"/>
   </view>
 </template>
 
@@ -30,6 +31,7 @@
   import Toast from '../components/toast'
   import utils from '../utils/utils'
   import Modal from '../components/modal'
+  import Loading from '../components/loading'
   import jasonUtils from '../utils/jasonUtils.js'
   // import echarts from 'echarts'
   export default class Index extends wepy.page {
@@ -38,16 +40,19 @@
     }
     components={
       toast: Toast,
-      modal: Modal
+      modal: Modal,
+      loading:Loading
     }
     data={
-      componentsList:['toast提示','弹窗','媒体播放组件','地图定位','检测js工具方法','获取用户acess_token'],
+      componentsList:['toast提示','弹窗','媒体播放组件','地图定位','检测js工具方法','获取用户acess_token','loading组件'],
       showToast:false,//展示toast
       title:'这是一个toast',//toast文案
       showModal:false,//展示弹窗
       modalTitle:'',//弹窗title
       modalContent:'',//弹窗弹窗文本
       modalSrc:'',//弹窗图片路径
+      showLoading:false,//展示loading
+      loadingDelay:3000,//loading展示的时长
     }
     showComponent(type){
       switch(type.currentTarget.dataset.type){
@@ -85,6 +90,14 @@
         case '获取用户acess_token':
           utils.getAt();
          break;
+        case 'loading组件':
+          this.showLoading=true;
+          this.$apply();
+          //  setTimeout(() => {
+          //   this.showLoading=false;
+          //   this.$apply();
+          // }, 300000);
+          break;
         default:
         this.showToast=true;
         this.title='组件待开发中'

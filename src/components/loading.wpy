@@ -1,0 +1,108 @@
+<style lang="less">
+    .loadingComponent{
+       position: absolute;
+       top:0;
+       height: 100%;
+       width: 100%;
+       background-color:rgba(0,0,0,0.6);
+       .loadingbox{
+           width: 400rpx;
+           height: 250rpx;
+           position: absolute;
+           top:50%;
+           left:50%;
+           transform: translate(-50%,-50%);
+           background-color: rgba(255,255,255,1);
+           .circle{
+              position: fixed;
+              top:50%;
+              left:50%;
+              transform: translate(-50%,-50%);
+              width: 50rpx;
+              height: 50rpx;
+              border:10rpx solid #000;
+              border-radius:50%;
+           }
+       }
+       .loading-rotate{
+            -webkit-animation: loading-rotate  linear infinite;
+            animation: loading-rotate  linear infinite; 
+       }
+    }
+    //wxxs底层不支持css3keyframes动画
+     @-webkit-keyframes loading-rotate {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+    @keyframes loading-rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<template>
+  <view class="loadingComponent" wx:if="{{showLoading}}">
+     <view class="loadingbox">
+         <view class="circle loading-rotate" animation="{{animationData}}"></view>
+     </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class extends wepy.component {
+    props = {
+        showLoading:{
+            type: String,
+            twoWay: true
+        },
+        loadingDelay:{
+            type: String,
+            twoWay: true
+        }
+    };
+    data={
+        animationData: {},
+        timer:''
+    }
+    methods={
+
+    }
+    onShow(){
+        setTimeout(() => {
+            this.props.showLoading=false;
+            this.$apply();
+        },3000);
+    }
+    onLoad(){
+        let Animation =wx.createAnimation({
+            transformOrigin:'0% 0% 0',
+            duration:5000,
+            timingFunction:'linear'
+        });
+        let that=this;
+        that.Animation = Animation;
+        var next=true;
+        that.timer=setInterval(()=>{
+            if(next){
+                Animation.rotateY(360).step();
+                next=!next
+            }else{
+                Animation.rotateY(-360).step();
+                next=!next
+            }
+            that.animationData=that.Animation.export();
+            console.log(666)
+        },100)
+        console.log(Animation,'检测动画函数的属性方法')
+    }
+  }
+</script>
