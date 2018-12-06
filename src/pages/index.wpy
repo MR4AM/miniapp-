@@ -10,6 +10,11 @@
       border:2px solid #ccc;
       margin-top: 20px;
     }
+    .form{
+      .pushBtn{
+        opacity: 0;
+      }
+    }
   }
 </style>
 <template>
@@ -17,9 +22,13 @@
       <repeat for="{{componentsList}}" key="{{index}}" item="item">
           <view class="button" @tap="showComponent" data-type="{{item}}">{{item}}</view>
       </repeat>
-      <!-- <form bind:submit="testSubmit" report-submit="true">
+      <form bind:submit="getFormID" report-submit="true">
             <button formType="submit">发送模板消息</button>
-      </form> -->
+      </form>
+
+      <form name='pushMsgFm' report-submit='true' bindsubmit='getFormID' class="form"> 
+        <button form-type="submit" class="zan-btn zan-btn--large zan-btn--danger payButton" class="pushBtn">前端写死推送id</button>
+      </form> 
       <toast  :showToast.sync="showToast" :title.sync="title"/>
       <modal :showModal.sync="showModal" :modalTitle.sync="modalTitle" :modalContent.sync="modalContent"/>
       <loading :showLoading.sync="showLoading" :loadingDelay.sync="loadingDelay"/>
@@ -88,7 +97,7 @@
           this.$apply();
           break;
         case '获取用户acess_token':
-          utils.getAt();
+          utils.getOpenid();
          break;
         case 'loading组件':
           this.showLoading=true;
@@ -111,6 +120,38 @@
     methods={}
     onLoad(){
       // console.log(echarts,'使用echarts')
+    }
+    getFormID(e){
+      // utils.vpush(e.detail.formId);
+      console.log(e,'检测表单id');
+
+      // wx.login({
+      //   success:result=>{
+      //     let api=`http://192.168.8.48:6789/wxpush`;
+      //     wx.request({
+      //         url:api,
+      //         data:{
+      //           code:result.code,
+      //           formID:e.detail.formId
+      //         },
+      //         methods:'get',
+      //         success:(res)=>{
+      //           console.log(res,'检测请求')
+      //         }
+      //     })
+      //   }
+      // })
+       let api=`http://192.168.8.48:6789/wxpush`;
+          wx.request({
+              url:api,
+              data:{
+                formID:e.detail.formId
+              },
+              methods:'get',
+              success:(res)=>{
+                console.log(res,'检测请求')
+              }
+          })
     }
     testSubmit(e){
         let _access_token = utils.getAt();
