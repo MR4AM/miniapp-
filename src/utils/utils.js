@@ -153,6 +153,38 @@ let utils ={
                 }
               });
         },5000)
+    },
+    //小程序用户授权
+    authrise(){
+        wx.authorize({
+            scope: 'scope.record',
+            success() {
+              // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
+              wx.startRecord()
+            }
+          })
+        wx.getSetting({
+            success(res) {
+              if (!res.authSetting['scope.record']) {
+               
+              }
+            }
+          })
+    },
+    //小程序socket连接
+    socket(){
+        wx.connectSocket({
+            url: 'wss://192.168.8.48:8082',
+            data: {
+              x: '',
+              y: ''
+            },
+            header: {
+              'content-type': 'application/json'
+            },
+            protocols: ['protocol1'],
+            method: 'GET'
+          })
     }
 }
 

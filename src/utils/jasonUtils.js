@@ -129,6 +129,19 @@ class jasonUtil{
         document.body.removeChild(html);
         document.head.removeChild(style);
     }
+    //小程序复制内容到粘贴板
+    static wxcopy(txt){
+        wx.setClipboardData({
+            data: JSON.stringify(txt),
+            success(res) {
+              wx.getClipboardData({
+                success(res1) {
+                  
+                }
+              })
+            }
+        })
+    }
     //多层数组扁平化,遍历数组递归,再将扁平化的数组concat合并一下
     static flattenArray(arr){
         var result = [];

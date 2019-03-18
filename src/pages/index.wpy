@@ -32,6 +32,7 @@
       <toast  :showToast.sync="showToast" :title.sync="title"/>
       <modal :showModal.sync="showModal" :modalTitle.sync="modalTitle" :modalContent.sync="modalContent"/>
       <loading :showLoading.sync="showLoading" :loadingDelay.sync="loadingDelay"/>
+      <button open-type="getUserInfo">授权按钮</button>
   </view>
 </template>
 
@@ -53,7 +54,7 @@
       loading:Loading
     }
     data={
-      componentsList:['toast提示','弹窗','媒体播放组件','地图定位','检测js工具方法','获取用户acess_token','loading组件'],
+      componentsList:['toast提示','弹窗','媒体播放组件','地图定位','检测js工具方法','获取用户acess_token','loading组件','js复制到粘贴板','检测网络状态','收货地址','用户授权','socket连接'],
       showToast:false,//展示toast
       title:'这是一个toast',//toast文案
       showModal:false,//展示弹窗
@@ -91,14 +92,21 @@
           break;
         case 'js复制到粘贴板':
           let txt='关注这个小程序，关注小程序组件化市场，工具类';
-          jasonUtils.jsCopy(txt);
-          this.showToast=true;
-          this.title=`已成功复制${txt}`;
-          this.$apply();
+          jasonUtils.wxcopy(txt);
           break;
         case '获取用户acess_token':
           utils.getOpenid();
          break;
+        case '检测网络状态':
+          wx.getNetworkType({
+            success(res){
+              console.log(res,'检测网络状态变化')
+            }
+          });
+          break;
+        case '收货地址':
+          wx.chooseAddress({})
+          break;
         case 'loading组件':
           this.showLoading=true;
           this.$apply();
@@ -106,6 +114,12 @@
           //   this.showLoading=false;
           //   this.$apply();
           // }, 300000);
+          break;
+        case 'socket连接':
+          utils.socket();
+          break;
+        case '用户授权':
+          utils.authrise();
           break;
         default:
         this.showToast=true;
