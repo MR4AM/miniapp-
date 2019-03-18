@@ -7,8 +7,14 @@
 - npm i 安装依赖包
 - npm run dev 运行编译测试环境
 - npm run bulid  运行编译正式环境
-### 启动
+### wepy启动
 - npm i
 - npm run dev 运行编译测试环境
 - npm run bulid  运行编译正式环境
+### 微信开发者工具启动注意事项
 - 使用微信开发者工具打开编译后的dist文件，这是wepy基于vue基础语法编译后生成的wxpage文件，可以在微信小程序上运行。
+- 关闭ES6转ES5 （未关闭时报thirdScriptError 
+ sdk uncaught third Error 
+ regeneratorRuntime is not defined 
+ ReferenceError: regeneratorRuntime is not defined 错误）
+- 打开不校验合法域名 
